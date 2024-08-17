@@ -1,20 +1,32 @@
 package errorhandler
 
-// import "net/http"
+import (
+	"net/http"
 
-// func HandleError(c, err error) {
-// 	var statusCode int
+	"github.com/gofiber/fiber/v2"
+	"github.com/revandpratama/task-hub/dto"
+	"github.com/revandpratama/task-hub/util"
+)
 
-// 	switch err.(type) {
-// 	case *NotFoundErr:
-// 		statusCode = http.StatusNotFound
-// 	case *InternalServerErr:
-// 		statusCode = http.StatusInternalServerError
-// 	case *UnauthorizedErr:
-// 		statusCode = http.StatusUnauthorized
-// 	case *BadRequestErr:
-// 		statusCode = http.StatusBadRequest
-// 	}
+func HandleError(c *fiber.Ctx, err error) error {
+	var statusCode int
 
-	
-// }
+	switch err.(type) {
+	case *NotFoundErr:
+		statusCode = http.StatusNotFound
+	case *InternalServerErr:
+		statusCode = http.StatusInternalServerError
+	case *UnauthorizedErr:
+		statusCode = http.StatusUnauthorized
+	case *BadRequestErr:
+		statusCode = http.StatusBadRequest
+	}
+
+	response := util.NewResponse(dto.ResponseParam{
+		StatusCode: statusCode,
+		Message:    err.Error(),
+	})
+
+	return c.JSON(response)
+
+}
