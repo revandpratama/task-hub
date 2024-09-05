@@ -27,13 +27,13 @@ func UserRoutes(r fiber.Router) {
 	
 	ur.Get("/tasks", taskHandler.GetAllUserTask)
 	ur.Get("/tasks/:taskid", taskHandler.GetUserTaskByID)
-	ur.Post("/tasks/:taskid", taskHandler.Create)
+	ur.Post("/tasks/", taskHandler.Create)
 	ur.Put("/tasks/:taskid", taskHandler.Update)
 	ur.Delete("/tasks/:taskid", taskHandler.Delete)
 
 	ur.Get("/projects", projectHandler.GetAllUserProject)
 	ur.Get("/projects/:projectid", projectHandler.GetUserProjectByID)
-	ur.Post("/projects/:projectid", projectHandler.Create)
+	ur.Post("/projects/", projectHandler.Create)
 	ur.Put("/projects/:projectid", projectHandler.Update)
 	ur.Delete("/projects/:projectid", projectHandler.Delete)
 
