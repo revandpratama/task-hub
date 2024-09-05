@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/revandpratama/task-hub/config"
 	"github.com/revandpratama/task-hub/database"
 	"github.com/revandpratama/task-hub/handler"
 	"github.com/revandpratama/task-hub/middleware"
@@ -10,7 +11,7 @@ import (
 )
 
 func UserRoutes(r fiber.Router) {
-	taskRepo := repository.NewTaskRepository(database.DBCONN)
+	taskRepo := repository.NewTaskRepository(database.DBCONN, config.RedisClient)
 	taskAttRepo := repository.NewTaskAttachmentRepository(database.DBCONN)
 	projectRepo := repository.NewProjectRepository(database.DBCONN)
 
