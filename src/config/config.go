@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	DOMAIN         string
 	PORT           string
 	JWT_SECRET_KEY string
 	DB_URL         string

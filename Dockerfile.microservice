@@ -1,0 +1,16 @@
+FROM golang:1.22-alpine
+
+RUN go install github.com/air-verse/air@latest
+
+WORKDIR /usr/local/taskhub/microservice/user-management
+
+COPY /microservice/user-management .
+RUN go mod download
+
+# RUN go build -o microservice-app cmd/main.go
+
+EXPOSE 9000
+
+# CMD [ "./microservice-app" ]
+# CMD ["air", "-c", ".air.toml"]
+ENTRYPOINT [ "air" ]

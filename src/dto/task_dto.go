@@ -1,6 +1,8 @@
 package dto
 
 type TaskRequest struct {
+	UserID      int    `json:"user_id"`
+	ProjectID   int    `json:"project_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Status      string `json:"status"`
@@ -8,10 +10,12 @@ type TaskRequest struct {
 }
 
 type TaskResponse struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-	Priority    string `json:"priority"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	ID             int               `json:"id"`
+	UserID         int               `json:"user_id"`
+	ProjectID      int               `json:"project_id"`
+	Title          string            `json:"title"`
+	Description    string            `json:"description"`
+	Status         string            `json:"status"`
+	Priority       string            `json:"priority"`
+	TaskAttachment []TaskAttResponse `json:"task_attachment"`
 }

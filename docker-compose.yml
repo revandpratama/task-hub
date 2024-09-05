@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+
+  main-app:
+    build: 
+       context: .
+       dockerfile: Dockerfile.main
+    ports:
+      - "8080:8080"
+    depends_on:
+      - microservice
+      - db
+      - redis
+    entrypoint: air
+
+
+  microservice:
+    build:
+     context: .
+     dockerfile: Dockerfile.microservice
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+      - redis
+    entrypoint: air
+
+  db: 
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=task-hub
+
+
+  redis:
+    image: redis:7.0-alpine
+    ports:
+    - "6379:6379"
+    volumes:
+      - redis_data:/var/lib/redis/data
+
+  pgadmin4:
+      image: elestio/pgadmin:latest
+      restart: always
+      environment:
+        PGADMIN_DEFAULT_EMAIL: postgres@gmail.com
+        PGADMIN_DEFAULT_PASSWORD: postgres
+        PGADMIN_LISTEN_PORT: 8081
+      ports:
+        - "8081:8081"
+      volumes:
+        - ./servers.json:/pgadmin4/servers.json
+
+volumes:
+  postgres_data:
+  redis_data:
+  
