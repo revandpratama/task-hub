@@ -47,6 +47,8 @@ func (h authHandler) Login(ctx *fiber.Ctx) error {
 
 	}
 
+	// val, err := config.RedisClient.Get(context.Background(), "invalidated-token").Result()
+
 	response := util.NewResponse(dto.ResponseParam{
 		StatusCode: fiber.StatusOK,
 		Message:    "login success",
@@ -90,6 +92,20 @@ func (h authHandler) Register(ctx *fiber.Ctx) error {
 	response := util.NewResponse(dto.ResponseParam{
 		StatusCode: fiber.StatusOK,
 		Message:    "register success",
+	})
+
+	return ctx.JSON(response)
+}
+
+func (h authHandler) Logout(ctx *fiber.Ctx) error {
+	token := ctx.Cookies("auth-token")
+	ctx.ClearCookie("auth-token")
+
+	config.RedisClient.SAdd(context.Background(), "invalidated-token", token)
+
+	response := util.NewResponse(dto.ResponseParam{
+		StatusCode: fiber.StatusOK,
+		Message:    "logout success",
 	})
 
 	return ctx.JSON(response)
