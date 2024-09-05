@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"context"
+
+	"github.com/redis/go-redis/v9"
 	"github.com/revandpratama/task-hub/entity"
 	"github.com/revandpratama/task-hub/errorhandler"
 	"gorm.io/gorm"
@@ -18,11 +21,15 @@ type TaskRepository interface {
 
 type taskRepository struct {
 	db *gorm.DB
+	redisClient *redis.Client
+	redisCtx context.Context
 }
 
-func NewTaskRepository(db *gorm.DB) *taskRepository {
+func NewTaskRepository(db *gorm.DB, redisClient *redis.Client) *taskRepository {
 	return &taskRepository{
 		db: db,
+		redisClient: redisClient,
+		redisCtx: context.Background(),
 	}
 }
 
