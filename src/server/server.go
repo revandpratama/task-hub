@@ -10,6 +10,7 @@ import (
 func Run() {
 	//load all the configurations
 	config.LoadConfig()
+	config.InitRedisClient()
 	database.LoadDB()
 
 	//Initialize routers
