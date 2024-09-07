@@ -1,7 +1,10 @@
 package middleware
 
 import (
+	"context"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/revandpratama/task-hub/config"
 	"github.com/revandpratama/task-hub/errorhandler"
 	"github.com/revandpratama/task-hub/util"
 )
@@ -11,7 +14,13 @@ func AuthorizationMiddleware() fiber.Handler {
 
 		token := ctx.Cookies("auth-token")
 		if token == "" {
-			return errorhandler.HandleError(ctx, &errorhandler.UnauthorizedErr{Message: "Unauthorized"})
+			return errorhandler.HandleError(ctx, &errorhandler.UnauthorizedErr{Message: "unauthorized"})
+		}
+
+		isInvalidated, _ := config.RedisClient.SIsMember(context.Background(), "auth-token", token).Result()
+
+		if isInvalidated {
+			return errorhandler.HandleError(ctx, &errorhandler.UnauthorizedErr{Message: "unauthorized"})
 		}
 
 		userIDFromToken, userRoleFromToken, err := util.ValidateToken(token)
